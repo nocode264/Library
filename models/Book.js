@@ -34,7 +34,12 @@ const bookSchema =  new mongoose.Schema({
         required: true,
         minlength: 10,
         maxlength: 500
-    }
+    },
+    
+    views: {
+        type: Number,
+        default: 0
+        },
 });
 
 module.exports = mongoose.model('Book', bookSchema);

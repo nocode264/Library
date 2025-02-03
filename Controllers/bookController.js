@@ -54,3 +54,45 @@ exports.deleteBook = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
+
+
+//search for a book
+exports.searchBook = async (req, res) => {
+    try {
+      const { title, author, publicationYear } = req.query;
+      const query = {};
+
+      if (title) query.title = new RegExp(title, 'i');
+      if (author) query.author = new RegExp(author, 'i');
+      if (publicationYear) query.publicationYear = Number(publicationYear);
+
+      const books = await Book.find(query);
+      res.status(200).json(books);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+
+//get popular books
+exports.getPopularBooks = async (req, res) => {
+    try {
+      const books = await Book.find().sort({ views: -1 }).limit(10);
+      res.status(200).json(books);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+
+//get recent books
+exports.getRecentBooks = async (req, res) => {
+    try {
+      const books = await Book.find().sort({ createdAt: -1 }).limit(10);
+      res.status(200).json(books);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  
